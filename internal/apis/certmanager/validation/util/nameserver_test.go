@@ -73,6 +73,16 @@ func TestValidNameserver(t *testing.T) {
 			want:       "nameserver.com:5353",
 		},
 		{
+			name:       "DNS name with non numeric port should error",
+			nameserver: "nameserver.com:abc",
+			wantErr:    true,
+		},
+		{
+			name:       "IPv4 with out of range port should error",
+			nameserver: "8.8.8.8:70000",
+			wantErr:    true,
+		},
+		{
 			name:       "Non unenclosed IPv6 should error",
 			nameserver: "2001:db8::1:5353",
 			wantErr:    true,

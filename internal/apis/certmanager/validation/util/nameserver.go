@@ -19,6 +19,7 @@ package util
 import (
 	"fmt"
 	"net"
+	"strconv"
 	"strings"
 )
 
@@ -60,6 +61,8 @@ func ValidNameserver(nameserver string) (string, error) {
 
 	if port == "" {
 		port = defaultRFC2136Port
+	} else if _, err := strconv.ParseUint(port, 10, 16); err != nil {
+		return "", fmt.Errorf("RFC2136 nameserver port is invalid: %s", err.Error())
 	}
 
 	return net.JoinHostPort(host, port), nil

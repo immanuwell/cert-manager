@@ -1717,6 +1717,16 @@ func TestValidateACMEIssuerDNS01Config(t *testing.T) {
 			},
 			errs: []*field.Error{},
 		},
+		"rfc2136 provider with non numeric port in nameserver": {
+			cfg: &cmacme.ACMEChallengeSolverDNS01{
+				RFC2136: &cmacme.ACMEIssuerDNS01ProviderRFC2136{
+					Nameserver: "dns.example.com:abc",
+				},
+			},
+			errs: []*field.Error{
+				field.Invalid(fldPath.Child("rfc2136", "nameserver"), "dns.example.com:abc", "nameserver must be set in the form host:port where host is an IPv4 address, an enclosed IPv6 address or a hostname and port is an optional port number."),
+			},
+		},
 		"rfc2136 provider with nameserver without host": {
 			cfg: &cmacme.ACMEChallengeSolverDNS01{
 				RFC2136: &cmacme.ACMEIssuerDNS01ProviderRFC2136{
